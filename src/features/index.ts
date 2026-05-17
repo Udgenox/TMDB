@@ -1,3 +1,4 @@
-export { TracksPage } from './tracks/TracksPage'
-export { PlaylistsPage } from './playlists/ui/PlaylistsPage'
-export { ProfilePage } from './auth/ui/ProfilePage'
+export { SearchPage } from './search/ui/SearchPage'
+export { CategoryMoviesPage } from './categoryMovies/ui/CategoryMoviesPage'
+export { FilteredMoviesPage } from './filteredMovies/ui/FilteredMoviesPage'
+export { FavoritesPage } from './favorites/ui/FavoritesPage'
