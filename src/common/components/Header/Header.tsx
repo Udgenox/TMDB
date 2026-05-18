@@ -1,7 +1,11 @@
+import { NavLink } from 'react-router';
+import { Path } from "@/common/routing";
+import s from './Header.module.css';
 
-import {Path} from "@/common/routing";
-import { NavLink } from 'react-router'
-import s from './Header.module.css'
+type ThemeProps = {
+    isDark: boolean;
+    setIsDark: (value: boolean) => void;
+};
 
 const navItems = [
     { to: Path.Main, label: 'Main' },
@@ -9,11 +13,14 @@ const navItems = [
     { to: Path.FilteredMovies, label: 'Filtered Movies' },
     { to: Path.Search, label: 'Search' },
     { to: Path.Favorites, label: 'Favorites' },
-]
+];
 
-export const Header = () => {
+export const Header = ({ isDark, setIsDark }: ThemeProps) => {
     return (
         <header className={s.container}>
+            <div className={s.logo}>
+                <span>TMDB</span>
+            </div>
             <nav>
                 <ul className={s.list}>
                     {navItems.map(item => (
@@ -28,6 +35,13 @@ export const Header = () => {
                     ))}
                 </ul>
             </nav>
+            <button
+                onClick={() => setIsDark(!isDark)}
+                className={s.themeButton}
+                aria-label="Переключить тему"
+            >
+                {isDark ? '☀️' : '🌙'}
+            </button>
         </header>
-    )
-}
+    );
+};
