@@ -1,5 +1,5 @@
 .container {
-    background-color: var(--header-bg, var(--bg));
+    background-color: var(--header-bg);
     border-bottom: 1px solid var(--border);
     padding: 1rem 2rem;
     position: sticky;
@@ -9,13 +9,6 @@
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #e50914;
-    font-family: var(--heading, sans-serif);
 }
 
 .list {
@@ -41,24 +34,15 @@
     padding: 0.5rem;
     border-radius: 50%;
     transition: all 0.2s ease;
+    background-color: var(--button-bg);
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: var(--button-bg, rgba(0, 0, 0, 0.05));
 }
 
 .themeButton:hover {
     transform: scale(1.1);
-    background-color: var(--button-bg-hover, rgba(0, 0, 0, 0.1));
-}
-
-/* Для тёмной темы */
-.dark .themeButton {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .themeButton:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 0.8;
 }

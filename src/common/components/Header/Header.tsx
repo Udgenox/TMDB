@@ -1,3 +1,4 @@
+import {Logo} from "@/common/components";
 import { NavLink } from 'react-router';
 import { Path } from "@/common/routing";
 import s from './Header.module.css';
@@ -18,9 +19,7 @@ const navItems = [
 export const Header = ({ isDark, setIsDark }: ThemeProps) => {
     return (
         <header className={s.container}>
-            <div className={s.logo}>
-                <span>TMDB</span>
-            </div>
+            <Logo />
             <nav>
                 <ul className={s.list}>
                     {navItems.map(item => (

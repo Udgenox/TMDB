@@ -1,0 +1,22 @@
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.logoText {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e50914;
+    font-family: var(--heading, system-ui, 'Segoe UI', Roboto, sans-serif);
+    letter-spacing: -0.5px;
+
+}
+
+.logoImage {
+    height: 32px;
+    width: auto;
+    display: block;
+}
