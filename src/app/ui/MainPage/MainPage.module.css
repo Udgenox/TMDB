@@ -1,12 +1,27 @@
+/* Секция с фоном — на всю высоту экрана */
+.welcomeSection {
+    min-height: calc(100vh - 70px);  /* 100% высоты минус высота Header */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;  /* Центрируем контент по вертикали */
+}
+
+/* Контейнер для контента */
 .container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .content {
-    margin-top: 300px;  /* ← добавляем отступ сверху, чтобы опустить контент */
+    max-width: 600px;
 }
 
 .title {
@@ -39,10 +54,18 @@
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.15);
     color: #ffffff;
+    outline: none;
+    transition: all 0.3s ease;
 }
 
 .searchInput::placeholder {
     color: rgba(255, 255, 255, 0.6);
+}
+
+.searchInput:focus {
+    border-color: #e50914;
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3);
 }
 
 .searchButton {
@@ -54,10 +77,43 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.searchButton:hover:not(:disabled) {
+    background-color: #f6121d;
+    transform: translateY(-1px);
 }
 
 .searchButton:disabled {
     background-color: #666;
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .title {
+        font-size: 44px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .searchContainer {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .searchButton {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 36px;
+    }
 }

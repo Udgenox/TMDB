@@ -1,17 +1,18 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const tmdbApi = createApi({
-    reducerPath: "tmdbApi",
+    reducerPath: 'tmdbApi',
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BASE_URL,
         headers: {
-            'API-KEY' : import.meta.env.VITE_API_KEY
-        }
+            'Authorization': `Bearer ${import.meta.env.VITE_API_KEY}`,
+        },
     }),
-    endpoint: (build) => {
-        return ({
+    endpoints: (builder) => ({
+        getPopularMovies: builder.query({
+            query: (page = 1) => `/movie/popular?language=en-US&page=${page}`,
+        }),
+    }),
+});
 
-        })
-    }
-})
+export const { useGetPopularMoviesQuery } = tmdbApi;

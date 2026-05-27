@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import {useGetPopularMoviesQuery} from "@/app/api";
+import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router';
 import s from './MainPage.module.css';
 
 export const MainPage = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
+    const [backgroundImage, setBackgroundImage] = useState('');
+
+    const { data: popularMovies } = useGetPopularMoviesQuery(1);
+
+    useEffect(() => {
+        if (popularMovies?.results && popularMovies.results.length > 0) {
+            const randomIndex = Math.floor(Math.random() * popularMovies.results.length);
+            const randomMovie = popularMovies.results[randomIndex];
+
+            if (randomMovie.backdrop_path) {
+                const imageUrl = `https://image.tmdb.org/t/p/original${randomMovie.backdrop_path}`;
+                setBackgroundImage(imageUrl);
+            }
+        }
+    }, [popularMovies]);
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
@@ -19,7 +35,14 @@ export const MainPage = () => {
     };
 
     return (
-        <section className={s.welcomeSection}>
+        <section
+            className={s.welcomeSection}
+            style={{
+                backgroundImage: backgroundImage
+                    ? `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url(${backgroundImage})`
+                    : undefined
+            }}
+        >
             <div className={s.container}>
                 <div className={s.content}>
                     <h1 className={s.title}>WELCOME</h1>
