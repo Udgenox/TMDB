@@ -18,3 +18,8 @@ export type ApiResponse = {
     total_pages: number;
     total_results: number;
 };
+
+export type SearchParams = {
+    query: string;
+    page?: number;
+}

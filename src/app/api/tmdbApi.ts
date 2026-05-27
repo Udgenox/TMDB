@@ -1,3 +1,4 @@
+import type {ApiResponse, SearchParams} from "@/app/api/tmdbAPI.types";
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const tmdbApi = createApi({
@@ -9,10 +10,14 @@ export const tmdbApi = createApi({
         },
     }),
     endpoints: (builder) => ({
-        getPopularMovies: builder.query({
+        getPopularMovies: builder.query<ApiResponse, number | void>({
             query: (page = 1) => `/movie/popular?language=en-US&page=${page}`,
         }),
+        searchMovies: builder.query<ApiResponse, SearchParams>({
+            query: ({ query, page = 1 }) =>
+                `/search/movie?query=${encodeURIComponent(query)}&language=en-US&page=${page}`,
+        })
     }),
 });
 
-export const { useGetPopularMoviesQuery } = tmdbApi;
+export const { useGetPopularMoviesQuery, useSearchMoviesQuery } = tmdbApi;
