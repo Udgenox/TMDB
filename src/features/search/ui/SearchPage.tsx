@@ -60,6 +60,13 @@ export const SearchPage = () => {
         }
     };
 
+    // Определение цвета кружка в зависимости от рейтинга
+    const getRatingColor = (rating: number): string => {
+        if (rating >= 8) return s.ratingGreen;
+        if (rating >= 5) return s.ratingYellow;
+        return s.ratingRed;
+    };
+
     // Блок поиска
     const searchBar = (
         <div className={s.searchHeader}>
@@ -154,11 +161,17 @@ export const SearchPage = () => {
                     >
                         <div className={s.posterWrapper}>
                             {movie.poster_path ? (
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                    alt={movie.title}
-                                    className={s.poster}
-                                />
+                                <>
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                        alt={movie.title}
+                                        className={s.poster}
+                                    />
+                                    {/* Кружок с оценкой */}
+                                    <div className={`${s.ratingBadge} ${getRatingColor(movie.vote_average)}`}>
+                                        <span className={s.ratingValue}>{movie.vote_average.toFixed(1)}</span>
+                                    </div>
+                                </>
                             ) : (
                                 <div className={s.posterPlaceholder}>
                                     <span>No poster</span>
@@ -166,13 +179,12 @@ export const SearchPage = () => {
                             )}
                         </div>
                         <h3 className={s.movieTitle}>{movie.title}</h3>
-                        <div className={s.movieRating}>⭐ {movie.vote_average.toFixed(1)}</div>
                     </div>
                 ))}
             </div>
 
             {/* Пагинация */}
-            {data && data?.total_pages > 1 && (
+            {data && data.total_pages > 1 && (
                 <div className={s.pagination}>
                     <button
                         className={s.pageButton}
@@ -184,56 +196,70 @@ export const SearchPage = () => {
 
                     <div className={s.pageNumbers}>
                         {(() => {
-                            const totalPages = Math.min(data?.total_pages || 1, 500); // TMDB максимум 500 страниц
-                            const pages = [];
-                            const maxVisible = 5;
-                            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-                            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+                            const totalPages = Math.min(data.total_pages, 500);
+                            const pages: (number | string)[] = [];
 
-                            if (endPage - startPage + 1 < maxVisible) {
-                                startPage = Math.max(1, endPage - maxVisible + 1);
+                            // Всегда показываем первую страницу
+                            pages.push(1);
+
+                            // Определяем диапазон страниц вокруг текущей
+                            let startPage = Math.max(2, currentPage - 1);
+                            let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+                            // Корректируем для начала
+                            if (currentPage <= 3) {
+                                startPage = 2;
+                                endPage = Math.min(totalPages - 1, 4);
                             }
 
+                            // Корректируем для конца
+                            if (currentPage >= totalPages - 2) {
+                                startPage = Math.max(2, totalPages - 3);
+                                endPage = totalPages - 1;
+                            }
+
+                            // Добавляем троеточие перед диапазоном
+                            if (startPage > 2) {
+                                pages.push('...');
+                            }
+
+                            // Добавляем страницы из диапазона
                             for (let i = startPage; i <= endPage; i++) {
                                 pages.push(i);
                             }
 
-                            return (
-                                <>
-                                    {startPage > 1 && (
-                                        <>
-                                            <button className={s.pageNumber} onClick={() => handlePageChange(1)}>1</button>
-                                            {startPage > 2 && <span className={s.dots}>...</span>}
-                                        </>
-                                    )}
+                            // Добавляем троеточие после диапазона
+                            if (endPage < totalPages - 1) {
+                                pages.push('...');
+                            }
 
-                                    {pages.map(page => (
-                                        <button
-                                            key={page}
-                                            className={`${s.pageNumber} ${currentPage === page ? s.activePage : ''}`}
-                                            onClick={() => handlePageChange(page)}
-                                        >
-                                            {page}
-                                        </button>
-                                    ))}
+                            // Всегда показываем последнюю страницу (если больше 1)
+                            if (totalPages > 1) {
+                                pages.push(totalPages);
+                            }
 
-                                    {endPage < totalPages && (
-                                        <>
-                                            {endPage < totalPages - 1 && <span className={s.dots}>...</span>}
-                                            <button className={s.pageNumber} onClick={() => handlePageChange(totalPages)}>
-                                                {totalPages}
-                                            </button>
-                                        </>
-                                    )}
-                                </>
-                            );
+                            return pages.map((page, index) => {
+                                if (page === '...') {
+                                    return <span key={`dots-${index}`} className={s.dots}>...</span>;
+                                }
+                                const pageNum = page as number;
+                                return (
+                                    <button
+                                        key={pageNum}
+                                        className={`${s.pageNumber} ${currentPage === pageNum ? s.activePage : ''}`}
+                                        onClick={() => handlePageChange(pageNum)}
+                                    >
+                                        {pageNum}
+                                    </button>
+                                );
+                            });
                         })()}
                     </div>
 
                     <button
                         className={s.pageButton}
                         onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === (data?.total_pages || 1) || currentPage >= 500}
+                        disabled={currentPage === (data.total_pages || 1) || currentPage >= 500}
                     >
                         Next →
                     </button>
@@ -241,4 +267,4 @@ export const SearchPage = () => {
             )}
         </div>
     );
-};
+}
