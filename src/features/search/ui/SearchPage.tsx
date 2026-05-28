@@ -5,78 +5,96 @@ import {useNavigate, useSearchParams} from "react-router";
 import s from './SearchPage.module.css'
 
 export const SearchPage = () => {
-    const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
-    const queryFromUrl = searchParams.get('query') || ''
-    const [searchInput, setSearchInput] = useState(queryFromUrl)
-    const [currentQuery, setCurrentQuery] = useState(queryFromUrl)
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const queryFromUrl = searchParams.get('query') || '';
+    const pageFromUrl = parseInt(searchParams.get('page') || '1');
 
-    const { data, isLoading, error } = useSearchMoviesQuery(                    // Хук для запроса к API
-        { query: currentQuery, page: 1 },                                          // Параметры запроса: текст и страница
-        { skip: !currentQuery }                                                    // Пропускаем запрос, если запрос пустой
-    )
+    const [searchInput, setSearchInput] = useState(queryFromUrl);
+    const [currentQuery, setCurrentQuery] = useState(queryFromUrl);
+    const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
+    const { data, isLoading, error } = useSearchMoviesQuery(
+        { query: currentQuery, page: currentPage },
+        { skip: !currentQuery }
+    );
+
+    // Обновляем инпут и страницу при изменении URL
     useEffect(() => {
-        setSearchInput(queryFromUrl)
-        setCurrentQuery(queryFromUrl)
-    }, [queryFromUrl])
+        setSearchInput(queryFromUrl);
+        setCurrentQuery(queryFromUrl);
+        setCurrentPage(pageFromUrl);
+    }, [queryFromUrl, pageFromUrl]);
 
     const handleSearch = () => {
         if (searchInput.trim()) {
-            setCurrentQuery(searchInput.trim())
-            navigate(`/search?query=${encodeURIComponent(searchInput.trim())}`)
+            setCurrentQuery(searchInput.trim());
+            setCurrentPage(1);
+            setSearchParams({ query: searchInput.trim(), page: '1' });
         }
-    }
+    };
 
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>)=> {
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && searchInput.trim()) {
-            handleSearch()
+            handleSearch();
         }
-    }
+    };
 
     const handleClear = () => {
-        setSearchInput('')
-        setCurrentQuery('')
-        navigate('/search')
-    }
+        setSearchInput('');
+        setCurrentQuery('');
+        setCurrentPage(1);
+        setSearchParams({});
+        navigate('/search');
+    };
 
-    const handleMovieClick= (movieId: number) => {
-        navigate(`/movies/${movieId}`)
-    }
+    const handleMovieClick = (movieId: number) => {
+        navigate(`/movie/${movieId}`);
+    };
 
-    if (!currentQuery) {
+    const handlePageChange = (page: number) => {
+        if (page >= 1 && page <= (data?.total_pages || 1)) {
+            setCurrentPage(page);
+            setSearchParams({ query: currentQuery, page: page.toString() });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
 
-
-    }
+    // Блок поиска
+    const searchBar = (
+        <div className={s.searchHeader}>
+            <div className={s.searchBox}>
+                <div className={s.inputWrapper}>
+                    <input
+                        type="text"
+                        className={s.searchInput}
+                        placeholder="Search for a movie..."
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                    />
+                    {searchInput && (
+                        <button className={s.clearButton} onClick={handleClear}>
+                            ✕
+                        </button>
+                    )}
+                </div>
+                <button
+                    className={s.searchButton}
+                    onClick={handleSearch}
+                    disabled={!searchInput.trim()}
+                >
+                    Search
+                </button>
+            </div>
+        </div>
+    );
 
     // Состояние 1: Нет запроса
     if (!currentQuery) {
         return (
             <div className={s.container}>
-                <div className={s.searchHeader}>
-                    <div className={s.searchBox}>
-                        <input
-                            type="text"
-                            className={s.searchInput}
-                            placeholder="Search for a movie..."
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                        />
-                        <button
-                            className={s.searchButton}
-                            onClick={handleSearch}
-                            disabled={!searchInput.trim()}
-                        >
-                            Search
-                        </button>
-                        {searchInput && (
-                            <button className={s.clearButton} onClick={handleClear}>
-                                ✖
-                            </button>
-                        )}
-                    </div>
-                </div>
+                {searchBar}
                 <div className={s.emptyState}>
                     <h2>Enter a movie title to start searching</h2>
                 </div>
@@ -88,25 +106,7 @@ export const SearchPage = () => {
     if (isLoading) {
         return (
             <div className={s.container}>
-                <div className={s.searchHeader}>
-                    <div className={s.searchBox}>
-                        <input
-                            type="text"
-                            className={s.searchInput}
-                            placeholder="Search for a movie..."
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                        />
-                        <button
-                            className={s.searchButton}
-                            onClick={handleSearch}
-                            disabled={!searchInput.trim()}
-                        >
-                            Search
-                        </button>
-                    </div>
-                </div>
+                {searchBar}
                 <div className={s.loading}>Loading...</div>
             </div>
         );
@@ -116,25 +116,7 @@ export const SearchPage = () => {
     if (error) {
         return (
             <div className={s.container}>
-                <div className={s.searchHeader}>
-                    <div className={s.searchBox}>
-                        <input
-                            type="text"
-                            className={s.searchInput}
-                            placeholder="Search for a movie..."
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                        />
-                        <button
-                            className={s.searchButton}
-                            onClick={handleSearch}
-                            disabled={!searchInput.trim()}
-                        >
-                            Search
-                        </button>
-                    </div>
-                </div>
+                {searchBar}
                 <div className={s.error}>
                     <p>Error loading movies. Please try again.</p>
                 </div>
@@ -146,25 +128,7 @@ export const SearchPage = () => {
     if (data?.results.length === 0) {
         return (
             <div className={s.container}>
-                <div className={s.searchHeader}>
-                    <div className={s.searchBox}>
-                        <input
-                            type="text"
-                            className={s.searchInput}
-                            placeholder="Search for a movie..."
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                        />
-                        <button
-                            className={s.searchButton}
-                            onClick={handleSearch}
-                            disabled={!searchInput.trim()}
-                        >
-                            Search
-                        </button>
-                    </div>
-                </div>
+                {searchBar}
                 <div className={s.emptyState}>
                     <h2>No matches found for "{currentQuery}"</h2>
                 </div>
@@ -175,32 +139,11 @@ export const SearchPage = () => {
     // Состояние 5: Есть результаты
     return (
         <div className={s.container}>
-            <div className={s.searchHeader}>
-                <div className={s.searchBox}>
-                    <input
-                        type="text"
-                        className={s.searchInput}
-                        placeholder="Search for a movie..."
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                    <button
-                        className={s.searchButton}
-                        onClick={handleSearch}
-                        disabled={!searchInput.trim()}
-                    >
-                        Search
-                    </button>
-                    {searchInput && (
-                        <button className={s.clearButton} onClick={handleClear}>
-                            ✖
-                        </button>
-                    )}
-                </div>
-            </div>
+            {searchBar}
 
-            <h2 className={s.resultsTitle}>Search results for "{currentQuery}"</h2>
+            <h2 className={s.resultsTitle}>
+                Search results for "{currentQuery}" ({data?.total_results} found)
+            </h2>
 
             <div className={s.moviesGrid}>
                 {data?.results.map((movie) => (
@@ -209,23 +152,93 @@ export const SearchPage = () => {
                         className={s.movieCard}
                         onClick={() => handleMovieClick(movie.id)}
                     >
-                        {/* Постер или заглушка "No poster" */}
-                        {movie.poster_path ? (
-                            <img
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                alt={movie.title}
-                                className={s.poster}
-                            />
-                        ) : (
-                            <div className={s.posterPlaceholder}>
-                                <span>No poster</span>
-                            </div>
-                        )}
+                        <div className={s.posterWrapper}>
+                            {movie.poster_path ? (
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                    alt={movie.title}
+                                    className={s.poster}
+                                />
+                            ) : (
+                                <div className={s.posterPlaceholder}>
+                                    <span>No poster</span>
+                                </div>
+                            )}
+                        </div>
                         <h3 className={s.movieTitle}>{movie.title}</h3>
                         <div className={s.movieRating}>⭐ {movie.vote_average.toFixed(1)}</div>
                     </div>
                 ))}
             </div>
+
+            {/* Пагинация */}
+            {data && data?.total_pages > 1 && (
+                <div className={s.pagination}>
+                    <button
+                        className={s.pageButton}
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        ← Previous
+                    </button>
+
+                    <div className={s.pageNumbers}>
+                        {(() => {
+                            const totalPages = Math.min(data?.total_pages || 1, 500); // TMDB максимум 500 страниц
+                            const pages = [];
+                            const maxVisible = 5;
+                            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+                            if (endPage - startPage + 1 < maxVisible) {
+                                startPage = Math.max(1, endPage - maxVisible + 1);
+                            }
+
+                            for (let i = startPage; i <= endPage; i++) {
+                                pages.push(i);
+                            }
+
+                            return (
+                                <>
+                                    {startPage > 1 && (
+                                        <>
+                                            <button className={s.pageNumber} onClick={() => handlePageChange(1)}>1</button>
+                                            {startPage > 2 && <span className={s.dots}>...</span>}
+                                        </>
+                                    )}
+
+                                    {pages.map(page => (
+                                        <button
+                                            key={page}
+                                            className={`${s.pageNumber} ${currentPage === page ? s.activePage : ''}`}
+                                            onClick={() => handlePageChange(page)}
+                                        >
+                                            {page}
+                                        </button>
+                                    ))}
+
+                                    {endPage < totalPages && (
+                                        <>
+                                            {endPage < totalPages - 1 && <span className={s.dots}>...</span>}
+                                            <button className={s.pageNumber} onClick={() => handlePageChange(totalPages)}>
+                                                {totalPages}
+                                            </button>
+                                        </>
+                                    )}
+                                </>
+                            );
+                        })()}
+                    </div>
+
+                    <button
+                        className={s.pageButton}
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === (data?.total_pages || 1) || currentPage >= 500}
+                    >
+                        Next →
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

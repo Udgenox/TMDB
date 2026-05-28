@@ -176,3 +176,111 @@
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 48px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.pageButton {
+    padding: 10px 20px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.pageButton:hover:not(:disabled) {
+    background-color: #e50914;
+    color: white;
+    border-color: #e50914;
+}
+
+.pageButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pageNumbers {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pageNumber {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.pageNumber:hover {
+    background-color: var(--bg-primary);
+    border-color: #e50914;
+}
+
+.activePage {
+    background-color: #e50914;
+    color: white;
+    border-color: #e50914;
+}
+
+.activePage:hover {
+    background-color: #f6121d;
+}
+
+.dots {
+    color: var(--text-secondary);
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+}
+
+/* Сетка фильмов: 5 в ряд */
+.moviesGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .moviesGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .moviesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .moviesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 400px) {
+    .moviesGrid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
