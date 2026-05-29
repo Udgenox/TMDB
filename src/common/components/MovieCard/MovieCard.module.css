@@ -1,0 +1,82 @@
+.movieCard {
+    background-color: var(--card-bg, var(--bg-secondary));
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.movieCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.posterWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+}
+
+.poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ratingBadge {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ratingValue {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+.ratingGreen {
+    background-color: #4caf50;
+}
+
+.ratingYellow {
+    background-color: #ffc107;
+}
+
+.ratingRed {
+    background-color: #f44336;
+}
+
+.posterPlaceholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--border) 0%, var(--bg-secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.movieTitle {
+    font-size: 16px;
+    padding: 12px;
+    margin: 0;
+    color: var(--text-h);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

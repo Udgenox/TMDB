@@ -13,11 +13,21 @@ export const tmdbApi = createApi({
         getPopularMovies: builder.query<ApiResponse, number | void>({
             query: (page = 1) => `/movie/popular?language=en-US&page=${page}`,
         }),
+        getTopRatedMovies: builder.query<ApiResponse, number | void>({
+            query: (page = 1) => `/movie/top_rated?language=en-US&page=${page}`
+        }),
+        getUpcomingMovies: builder.query<ApiResponse, number | void>({
+            query: (page = 1) => `/movie/upcoming?language=en-US&page=${page}`,
+        }),
+        getNowPlayingMovies: builder.query<ApiResponse, number | void>({
+            query: (page = 1) => `/movie/now_playing?language=en-US&page=${page}`,
+        }),
         searchMovies: builder.query<ApiResponse, SearchParams>({
             query: ({ query, page = 1 }) =>
                 `/search/movie?query=${encodeURIComponent(query)}&language=en-US&page=${page}`,
-        })
+        }),
+
     }),
 });
 
-export const { useGetPopularMoviesQuery, useSearchMoviesQuery } = tmdbApi;
+export const { useGetPopularMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMoviesQuery, useGetNowPlayingMoviesQuery, useSearchMoviesQuery } = tmdbApi;

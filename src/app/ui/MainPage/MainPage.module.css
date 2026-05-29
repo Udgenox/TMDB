@@ -1,13 +1,13 @@
 /* Секция с фоном — на всю высоту экрана */
 .welcomeSection {
-    min-height: calc(100vh - 70px);  /* 100% высоты минус высота Header */
+    min-height: calc(100vh - 70px);
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     position: relative;
     width: 100%;
     display: flex;
-    align-items: center;  /* Центрируем контент по вертикали */
+    align-items: center;
 }
 
 /* Контейнер для контента */
@@ -92,6 +92,46 @@
     opacity: 0.6;
 }
 
+/* Блоки с фильмами (Popular, Top Rated, Upcoming, Now Playing) */
+.section {
+    margin-bottom: 48px;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sectionTitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-h);
+}
+
+.viewMoreButton {
+    background: none;
+    border: none;
+    color: #e50914;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.viewMoreButton:hover {
+    background-color: rgba(229, 9, 20, 0.1);
+}
+
+.moviesGrid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
     .title {
@@ -110,10 +150,24 @@
     .searchButton {
         width: 100%;
     }
+
+    .moviesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .moviesGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 @media (max-width: 480px) {
     .title {
         font-size: 36px;
+    }
+
+    .moviesGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
