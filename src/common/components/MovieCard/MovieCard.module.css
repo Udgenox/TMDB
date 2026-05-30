@@ -63,6 +63,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;  /* ← добавляем */
+    gap: 10px;               /* ← добавляем */
     color: var(--text-secondary);
     font-size: 14px;
     font-weight: 500;
@@ -79,4 +81,45 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* Кнопка "Любимые" — появляется при наведении */
+.favoriteButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Показываем кнопку при наведении на карточку */
+.movieCard:hover .favoriteButton {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Эффект при наведении на кнопку */
+.favoriteButton:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Если фильм в избранном — сердечко всегда видимое и красное */
+.favoriteActive {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #ff4444;
 }

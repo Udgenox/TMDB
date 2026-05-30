@@ -1,3 +1,6 @@
+import {useAppDispatch, useAppSelector} from "@/app/store";
+import {toggleFavorite} from "@/features/favorites/model";
+
 import {useNavigate} from "react-router";
 import s from './MovieCard.module.css'
 
@@ -17,9 +20,20 @@ const getRatingColor = (rating: number): string => {
 
 export const MovieCard = ({ id, title, posterPath, voteAverage }: MovieCardProps) => {
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+
+    // Проверяем, в избранном ли фильм
+    const isFavorite = useAppSelector((state) =>
+        state.favorites.ids.includes(id)
+    );
 
     const handleClick = () => {
         navigate(`/movie/${id}`);
+    };
+
+    const handleFavoriteClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Чтобы не сработал переход на страницу фильма
+        dispatch(toggleFavorite(id));
     };
 
     return (
@@ -35,10 +49,25 @@ export const MovieCard = ({ id, title, posterPath, voteAverage }: MovieCardProps
                         <div className={`${s.ratingBadge} ${getRatingColor(voteAverage)}`}>
                             <span className={s.ratingValue}>{voteAverage.toFixed(1)}</span>
                         </div>
+                        {/* Кнопка "Любимые" */}
+                        <button
+                            className={`${s.favoriteButton} ${isFavorite ? s.favoriteActive : ''}`}
+                            onClick={handleFavoriteClick}
+                            aria-label={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
+                        >
+                            {isFavorite ? '❤️' : '🤍'}
+                        </button>
                     </>
                 ) : (
                     <div className={s.posterPlaceholder}>
                         <span>No poster</span>
+                        {/* Кнопка "Любимые" */}
+                        <button
+                            className={`${s.favoriteButton} ${isFavorite ? s.favoriteActive : ''}`}
+                            onClick={handleFavoriteClick}
+                        >
+                            {isFavorite ? '❤️' : '🤍'}
+                        </button>
                     </div>
                 )}
             </div>
