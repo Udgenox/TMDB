@@ -1,3 +1,4 @@
+import {Footer} from "@/common/components/Footer/Footer";
 import { useState, useEffect } from 'react';
 import { Header } from "@/common/components";
 import { Routing } from "@/common/routing";
@@ -20,6 +21,7 @@ export const App = () => {
         <>
             <Header isDark={isDark} setIsDark={setIsDark} />
             <Routing />
+            <Footer />
         </>
     );
 };

@@ -1,0 +1,55 @@
+.footer {
+    margin-top: auto;  /* Прижимает footer к низу */
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    padding: 24px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.copyright {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.socialLinks {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.socialLink {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.socialLink:hover {
+    color: #e50914;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .socialLinks {
+        justify-content: center;
+    }
+}
