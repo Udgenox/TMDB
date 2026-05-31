@@ -2,7 +2,7 @@ import {useGetPopularMoviesQuery} from "@/app/api";
 import {useGetNowPlayingMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMoviesQuery} from "@/app/api/tmdbApi";
 import {MovieSection} from "@/common/components/MovieSection/MovieSection";
 import {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router';
+import {useNavigate} from 'react-router';
 import s from './MainPage.module.css';
 
 export const MainPage = () => {
@@ -45,7 +45,6 @@ export const MainPage = () => {
 
     return (
         <>
-            {/* Welcome Section */}
             <section
                 className={s.welcomeSection}
                 style={{
@@ -80,30 +79,25 @@ export const MainPage = () => {
                 </div>
             </section>
 
-            {/* Блоки с фильмами */}
             <div className={s.container}>
-                {/* Popular Movies */}
                 <MovieSection
                     title="Popular Movies"
                     movies={popularMovies?.results || []}
                     onViewMore={() => handleViewMore('popular')}
                 />
 
-                {/* Top Rated Movies */}
                 <MovieSection
                     title="Top Rated"
                     movies={topRatedMovies?.results || []}
                     onViewMore={() => handleViewMore('top_rated')}
                 />
 
-                {/* Upcoming Movies */}
                 <MovieSection
                     title="Upcoming"
                     movies={upcomingMovies?.results || []}
                     onViewMore={() => handleViewMore('upcoming')}
                 />
 
-                {/* Now Playing Movies */}
                 <MovieSection
                     title="Now Playing"
                     movies={nowPlayingMovies?.results || []}

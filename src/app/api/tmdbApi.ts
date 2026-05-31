@@ -1,4 +1,5 @@
 import type {ApiResponse, SearchParams} from "@/app/api/tmdbAPI.types";
+import type {CategoryType} from "@/features/categoryMovies/ui/CategoryMoviesPage";
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const tmdbApi = createApi({
@@ -26,8 +27,11 @@ export const tmdbApi = createApi({
             query: ({ query, page = 1 }) =>
                 `/search/movie?query=${encodeURIComponent(query)}&language=en-US&page=${page}`,
         }),
+        getMoviesByCategory: builder.query<ApiResponse, { category: CategoryType; page?: number }>({
+            query: ({ category, page = 1 }) => `/movie/${category}?language=en-US&page=${page}`,
+        }),
 
     }),
 });
 
-export const { useGetPopularMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMoviesQuery, useGetNowPlayingMoviesQuery, useSearchMoviesQuery } = tmdbApi;
+export const { useGetPopularMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMoviesQuery, useGetNowPlayingMoviesQuery, useSearchMoviesQuery, useGetMoviesByCategoryQuery } = tmdbApi;
