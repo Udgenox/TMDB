@@ -1,12 +1,11 @@
+import {useAppSelector} from "@/app/store";
+import {Header} from "@/common/components";
 import {Footer} from "@/common/components/Footer/Footer";
-import { useState, useEffect } from 'react';
-import { Header } from "@/common/components";
-import { Routing } from "@/common/routing";
+import {Routing} from "@/common/routing";
+import {useEffect} from 'react';
 
 export const App = () => {
-    const [isDark, setIsDark] = useState(() => {
-        return localStorage.getItem('theme') === 'dark';
-    });
+    const {isDark} = useAppSelector((state) => state.theme);
 
     useEffect(() => {
         if (isDark) {
@@ -18,10 +17,12 @@ export const App = () => {
     }, [isDark]);
 
     return (
-        <>
-            <Header isDark={isDark} setIsDark={setIsDark} />
-            <Routing />
-            <Footer />
-        </>
+        <div style={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
+            <Header/>
+            <main style={{flex: 1}}>
+                <Routing/>
+            </main>
+            <Footer/>
+        </div>
     );
 };

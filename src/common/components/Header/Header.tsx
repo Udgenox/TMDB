@@ -1,12 +1,10 @@
+import {useAppDispatch, useAppSelector} from "@/app/store";
 import {Logo} from "@/common/components";
+import {toggleTheme} from "@/features/theme/model/themeSlice";
 import { NavLink } from 'react-router';
 import { Path } from "@/common/routing";
 import s from './Header.module.css';
 
-type ThemeProps = {
-    isDark: boolean;
-    setIsDark: (value: boolean) => void;
-};
 
 const navItems = [
     { to: Path.Main, label: 'Main' },
@@ -16,7 +14,10 @@ const navItems = [
     { to: Path.Favorites, label: 'Favorites' },
 ];
 
-export const Header = ({ isDark, setIsDark }: ThemeProps) => {
+export const Header = () => {
+    const dispatch = useAppDispatch();
+    const { isDark } = useAppSelector((state) => state.theme);
+
     return (
         <header className={s.container}>
             <Logo />
@@ -35,7 +36,7 @@ export const Header = ({ isDark, setIsDark }: ThemeProps) => {
                 </ul>
             </nav>
             <button
-                onClick={() => setIsDark(!isDark)}
+                onClick={() => dispatch(toggleTheme())}
                 className={s.themeButton}
                 aria-label="Переключить тему"
             >

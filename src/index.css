@@ -21,3 +21,23 @@ body.dark {
   background-color: var(--bg);
   color: var(--text);
 }
+
+/* ========== НОВЫЕ СТИЛИ ДЛЯ FOOTER ========== */
+
+/* Чтобы footer прижимался к низу */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Главный контент — занимает всё свободное место */
+.main-content {
+  flex: 1;
+}
