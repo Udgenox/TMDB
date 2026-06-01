@@ -1,4 +1,4 @@
-import type {ApiResponse, SearchParams} from "@/app/api/tmdbAPI.types";
+import type {ApiResponse, DiscoverParams, Genre, SearchParams} from "@/app/api/tmdbAPI.types";
 import type {CategoryType} from "@/features/categoryMovies/ui/CategoryMoviesPage";
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -30,8 +30,32 @@ export const tmdbApi = createApi({
         getMoviesByCategory: builder.query<ApiResponse, { category: CategoryType; page?: number }>({
             query: ({ category, page = 1 }) => `/movie/${category}?language=en-US&page=${page}`,
         }),
+        getGenres: builder.query<{ genres: Genre[] }, void>({
+            query: () => '/genre/movie/list?language=en-US',
+        }),
+        discoverMovies: builder.query<ApiResponse, DiscoverParams>({  // DISCOVER-фильтрация
+            query: (params) => {
+                // Базовый URL с обязательными параметрами
+                let url = `/discover/movie?page=${params.page}&sort_by=${params.sort_by}`;
 
+                // Добавляем опциональные параметры
+                if (params.with_genres) url += `&with_genres=${params.with_genres}`;
+                if (params['vote_average.gte'] !== undefined) url += `&vote_average.gte=${params['vote_average.gte']}`;
+                if (params['vote_average.lte'] !== undefined) url += `&vote_average.lte=${params['vote_average.lte']}`;
+
+                return url;
+            },
+        }),
     }),
 });
 
-export const { useGetPopularMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMoviesQuery, useGetNowPlayingMoviesQuery, useSearchMoviesQuery, useGetMoviesByCategoryQuery } = tmdbApi;
+export const {
+    useGetPopularMoviesQuery,
+    useGetTopRatedMoviesQuery,
+    useGetUpcomingMoviesQuery,
+    useGetNowPlayingMoviesQuery,
+    useSearchMoviesQuery,
+    useGetMoviesByCategoryQuery,
+    useDiscoverMoviesQuery,
+    useGetGenresQuery
+} = tmdbApi;

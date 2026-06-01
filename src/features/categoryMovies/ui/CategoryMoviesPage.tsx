@@ -1,7 +1,7 @@
 import {useGetMoviesByCategoryQuery} from "@/app/api/tmdbApi";
 import {MovieCard} from "@/common/components/MovieCard/MovieCard";
 import {useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router";
+import {useSearchParams} from "react-router";
 import s from './CategoryMoviesPage.module.css'
 
 export type CategoryType = 'popular' | 'top_rated' | 'upcoming' | 'now_playing';
