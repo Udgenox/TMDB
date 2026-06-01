@@ -19,7 +19,6 @@ export const SearchPage = () => {
         { skip: !currentQuery }
     );
 
-    // Обновляем инпут и страницу при изменении URL
     useEffect(() => {
         setSearchInput(queryFromUrl);
         setCurrentQuery(queryFromUrl);
@@ -60,50 +59,46 @@ export const SearchPage = () => {
         }
     };
 
-    // Определение цвета кружка в зависимости от рейтинга
     const getRatingColor = (rating: number): string => {
         if (rating >= 8) return s.ratingGreen;
         if (rating >= 5) return s.ratingYellow;
         return s.ratingRed;
     };
 
-    // Блок поиска
-    const searchBar = (
-        <div className={s.searchHeader}>
-            <div className={s.searchBox}>
-                <div className={s.inputWrapper}>
-                    <input
-                        type="text"
-                        className={s.searchInput}
-                        placeholder="Search for a movie..."
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                    {searchInput && (
-                        <button className={s.clearButton} onClick={handleClear}>
-                            ✕
-                        </button>
-                    )}
-                </div>
-                <button
-                    className={s.searchButton}
-                    onClick={handleSearch}
-                    disabled={!searchInput.trim()}
-                >
-                    Search
-                </button>
-            </div>
-        </div>
-    );
-
     // Состояние 1: Нет запроса
     if (!currentQuery) {
         return (
             <div className={s.container}>
-                {searchBar}
-                <div className={s.emptyState}>
-                    <h2>Enter a movie title to start searching</h2>
+                <h1 className={s.pageTitle}>Search Results</h1>
+
+                <div className={s.searchSection}>
+                    <div className={s.searchBox}>
+                        <div className={s.inputWrapper}>
+                            <input
+                                type="text"
+                                className={s.searchInput}
+                                placeholder="Search for a movie"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
+                            {searchInput && (
+                                <button className={s.clearButton} onClick={handleClear}>
+                                    ✕
+                                </button>
+                            )}
+                        </div>
+                        <button
+                            className={s.searchButton}
+                            onClick={handleSearch}
+                            disabled={!searchInput.trim()}
+                        >
+                            Search
+                        </button>
+                    </div>
+                    <div className={s.emptyState}>
+                        <p>Enter a movie title to start searching</p>
+                    </div>
                 </div>
             </div>
         );
@@ -113,8 +108,35 @@ export const SearchPage = () => {
     if (isLoading) {
         return (
             <div className={s.container}>
-                {searchBar}
-                <div className={s.loading}>Loading...</div>
+                <h1 className={s.pageTitle}>Search Results</h1>
+
+                <div className={s.searchSection}>
+                    <div className={s.searchBox}>
+                        <div className={s.inputWrapper}>
+                            <input
+                                type="text"
+                                className={s.searchInput}
+                                placeholder="Search for a movie"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
+                            {searchInput && (
+                                <button className={s.clearButton} onClick={handleClear}>
+                                    ✕
+                                </button>
+                            )}
+                        </div>
+                        <button
+                            className={s.searchButton}
+                            onClick={handleSearch}
+                            disabled={!searchInput.trim()}
+                        >
+                            Search
+                        </button>
+                    </div>
+                    <div className={s.loading}>Loading...</div>
+                </div>
             </div>
         );
     }
@@ -123,9 +145,36 @@ export const SearchPage = () => {
     if (error) {
         return (
             <div className={s.container}>
-                {searchBar}
-                <div className={s.error}>
-                    <p>Error loading movies. Please try again.</p>
+                <h1 className={s.pageTitle}>Search Results</h1>
+
+                <div className={s.searchSection}>
+                    <div className={s.searchBox}>
+                        <div className={s.inputWrapper}>
+                            <input
+                                type="text"
+                                className={s.searchInput}
+                                placeholder="Search for a movie"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
+                            {searchInput && (
+                                <button className={s.clearButton} onClick={handleClear}>
+                                    ✕
+                                </button>
+                            )}
+                        </div>
+                        <button
+                            className={s.searchButton}
+                            onClick={handleSearch}
+                            disabled={!searchInput.trim()}
+                        >
+                            Search
+                        </button>
+                    </div>
+                    <div className={s.error}>
+                        <p>Error loading movies. Please try again.</p>
+                    </div>
                 </div>
             </div>
         );
@@ -135,9 +184,36 @@ export const SearchPage = () => {
     if (data?.results.length === 0) {
         return (
             <div className={s.container}>
-                {searchBar}
-                <div className={s.emptyState}>
-                    <h2>No matches found for "{currentQuery}"</h2>
+                <h1 className={s.pageTitle}>Search Results</h1>
+
+                <div className={s.searchSection}>
+                    <div className={s.searchBox}>
+                        <div className={s.inputWrapper}>
+                            <input
+                                type="text"
+                                className={s.searchInput}
+                                placeholder="Search for a movie"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
+                            {searchInput && (
+                                <button className={s.clearButton} onClick={handleClear}>
+                                    ✕
+                                </button>
+                            )}
+                        </div>
+                        <button
+                            className={s.searchButton}
+                            onClick={handleSearch}
+                            disabled={!searchInput.trim()}
+                        >
+                            Search
+                        </button>
+                    </div>
+                    <div className={s.emptyState}>
+                        <p>No matches found for "{currentQuery}"</p>
+                    </div>
                 </div>
             </div>
         );
@@ -146,10 +222,37 @@ export const SearchPage = () => {
     // Состояние 5: Есть результаты
     return (
         <div className={s.container}>
-            {searchBar}
+            <h1 className={s.pageTitle}>Search Results</h1>
+
+            <div className={s.searchSection}>
+                <div className={s.searchBox}>
+                    <div className={s.inputWrapper}>
+                        <input
+                            type="text"
+                            className={s.searchInput}
+                            placeholder="Search for a movie"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                        />
+                        {searchInput && (
+                            <button className={s.clearButton} onClick={handleClear}>
+                                ✕
+                            </button>
+                        )}
+                    </div>
+                    <button
+                        className={s.searchButton}
+                        onClick={handleSearch}
+                        disabled={!searchInput.trim()}
+                    >
+                        Search
+                    </button>
+                </div>
+            </div>
 
             <h2 className={s.resultsTitle}>
-                Search results for "{currentQuery}" ({data?.total_results} found)
+                Results for "{currentQuery}"
             </h2>
 
             <div className={s.moviesGrid}>
@@ -167,7 +270,6 @@ export const SearchPage = () => {
                                         alt={movie.title}
                                         className={s.poster}
                                     />
-                                    {/* Кружок с оценкой */}
                                     <div className={`${s.ratingBadge} ${getRatingColor(movie.vote_average)}`}>
                                         <span className={s.ratingValue}>{movie.vote_average.toFixed(1)}</span>
                                     </div>
@@ -199,41 +301,33 @@ export const SearchPage = () => {
                             const totalPages = Math.min(data.total_pages, 500);
                             const pages: (number | string)[] = [];
 
-                            // Всегда показываем первую страницу
                             pages.push(1);
 
-                            // Определяем диапазон страниц вокруг текущей
                             let startPage = Math.max(2, currentPage - 1);
                             let endPage = Math.min(totalPages - 1, currentPage + 1);
 
-                            // Корректируем для начала
                             if (currentPage <= 3) {
                                 startPage = 2;
                                 endPage = Math.min(totalPages - 1, 4);
                             }
 
-                            // Корректируем для конца
                             if (currentPage >= totalPages - 2) {
                                 startPage = Math.max(2, totalPages - 3);
                                 endPage = totalPages - 1;
                             }
 
-                            // Добавляем троеточие перед диапазоном
                             if (startPage > 2) {
                                 pages.push('...');
                             }
 
-                            // Добавляем страницы из диапазона
                             for (let i = startPage; i <= endPage; i++) {
                                 pages.push(i);
                             }
 
-                            // Добавляем троеточие после диапазона
                             if (endPage < totalPages - 1) {
                                 pages.push('...');
                             }
 
-                            // Всегда показываем последнюю страницу (если больше 1)
                             if (totalPages > 1) {
                                 pages.push(totalPages);
                             }
@@ -267,4 +361,4 @@ export const SearchPage = () => {
             )}
         </div>
     );
-}
+};

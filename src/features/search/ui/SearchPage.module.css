@@ -1,28 +1,34 @@
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 20px;
 }
 
-/* Заголовок поиска */
-.searchHeader {
+/* Заголовок страницы */
+.pageTitle {
+    font-size: 32px;
+    font-weight: 600;
     margin-bottom: 32px;
-    padding: 20px;
-    background-color: var(--bg-secondary);
-    border-radius: 12px;
+    color: var(--text-h);
+    text-align: left;
+}
+
+/* Секция поиска */
+.searchSection {
+    margin-bottom: 40px;
 }
 
 .searchBox {
     display: flex;
     gap: 12px;
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
+    max-width: 500px;
+    width: 100%;
 }
 
 .inputWrapper {
     position: relative;
     flex: 1;
+    min-width: 0; /* Важно: позволяет flex-ребёнку сжиматься */
 }
 
 .searchInput {
@@ -30,16 +36,17 @@
     padding: 12px 40px 12px 16px;
     font-size: 16px;
     border: 1px solid var(--border);
-    border-radius: 30px;
+    border-radius: 26px;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     outline: none;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .searchInput:focus {
-    border-color: #e50914;
-    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+    border-color: rgb(54, 98, 227);
+    box-shadow: 0 0 0 2px rgba(54, 98, 227, 0.2);
 }
 
 .clearButton {
@@ -50,7 +57,7 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background-color: var(--text-secondary);
+    background-color: var(--clear-button-bg);
     border: none;
     cursor: pointer;
     display: flex;
@@ -58,31 +65,32 @@
     justify-content: center;
     padding: 0;
     transition: all 0.2s ease;
-    color: white;
+    color: var(--clear-button-color);
     font-size: 14px;
     font-weight: bold;
 }
 
 .clearButton:hover {
-    background-color: #e50914;
+    background-color: rgb(54, 98, 227);
     transform: translateY(-50%) scale(1.1);
 }
 
 .searchButton {
     padding: 12px 24px;
-    background-color: #e50914;
+    background-color: rgb(54, 98, 227);
     color: white;
     border: none;
-    border-radius: 30px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
     white-space: nowrap;
+    flex-shrink: 0; /* Кнопка не сжимается */
 }
 
 .searchButton:hover:not(:disabled) {
-    background-color: #f6121d;
-    transform: scale(1.02);
+    background-color: rgb(54, 98, 227);
+    transform: translateY(-1px);
 }
 
 .searchButton:disabled {
@@ -93,9 +101,10 @@
 
 .resultsTitle {
     margin-bottom: 24px;
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--text-h);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: left;
 }
 
 /* Сетка фильмов: 5 в ряд */
@@ -118,7 +127,6 @@
     box-shadow: var(--shadow);
 }
 
-/* Обёртка для постера */
 .posterWrapper {
     position: relative;
     width: 100%;
@@ -132,13 +140,12 @@
     object-fit: cover;
 }
 
-/* Кружок с оценкой на постере */
 .ratingBadge {
     position: absolute;
     bottom: 8px;
     right: 8px;
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -148,30 +155,23 @@
 }
 
 .ratingValue {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: white;
 }
 
-/* Зелёный (8-10) */
 .ratingGreen {
     background-color: #4caf50;
-    border: none;
 }
 
-/* Жёлтый (5-7) */
 .ratingYellow {
     background-color: #ffc107;
-    border: none;
 }
 
-/* Красный (0-5) */
 .ratingRed {
-    background-color: #f44336;
-    border: none;
+    background-color: rgb(54, 98, 227);
 }
 
-/* Заглушка "No poster" */
 .posterPlaceholder {
     width: 100%;
     height: 100%;
@@ -187,28 +187,30 @@
 }
 
 .movieTitle {
-    font-size: 16px;
-    padding: 12px 12px 12px;
+    font-size: 14px;
+    padding: 12px;
     margin: 0;
     color: var(--text-h);
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .emptyState {
-    text-align: center;
-    padding: 60px 20px;
+    text-align: left;
+    padding: 20px 0;
     color: var(--text-secondary);
 }
 
-.emptyState h2 {
-    font-size: 20px;
-    font-weight: normal;
+.emptyState p {
+    font-size: 16px;
 }
 
 .loading, .error {
-    text-align: center;
-    padding: 60px 20px;
-    font-size: 18px;
+    text-align: left;
+    padding: 20px 0;
+    font-size: 16px;
 }
 
 .error {
@@ -303,6 +305,15 @@
 @media (max-width: 600px) {
     .moviesGrid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .searchBox {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .searchButton {
+        width: 100%;
     }
 }
 
