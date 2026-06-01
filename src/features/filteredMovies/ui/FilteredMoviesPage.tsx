@@ -81,7 +81,7 @@ export const FilteredMoviesPage = () => {
                                 ))}
                             </div>
 
-                            {/* Пагинация */}
+                            {/* Пагинация в формате "1 2 ... последняя" */}
                             {totalPages > 1 && (
                                 <div className={s.pagination}>
                                     <button
@@ -93,12 +93,15 @@ export const FilteredMoviesPage = () => {
                                     </button>
 
                                     <div className={s.pageNumbers}>
+                                        {/* Страница 1 */}
                                         <button
                                             className={`${s.pageNumber} ${currentPage === 1 ? s.activePage : ''}`}
                                             onClick={() => handlePageChange(1)}
                                         >
                                             1
                                         </button>
+
+                                        {/* Страница 2 (если есть) */}
                                         {totalPages >= 2 && (
                                             <button
                                                 className={`${s.pageNumber} ${currentPage === 2 ? s.activePage : ''}`}
@@ -107,7 +110,11 @@ export const FilteredMoviesPage = () => {
                                                 2
                                             </button>
                                         )}
+
+                                        {/* Троеточие, если есть страницы после 2 */}
                                         {totalPages > 3 && <span className={s.dots}>...</span>}
+
+                                        {/* Последняя страница (если не 1 и не 2) */}
                                         {totalPages > 2 && (
                                             <button
                                                 className={`${s.pageNumber} ${currentPage === totalPages ? s.activePage : ''}`}
