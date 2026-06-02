@@ -1,33 +1,51 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
-export type FavoritesState = {
-    ids: number[]
-}
+export type FavoriteMovie = {
+    id: number;
+    title: string;
+    posterPath: string | null;
+    voteAverage: number;
+};
 
-const loadFavorites = (): number[] => {
+export type FavoritesState = {
+    items: FavoriteMovie[];
+};
+
+// Загружаем избранное из localStorage
+const loadFavorites = (): FavoriteMovie[] => {
     const saved = localStorage.getItem('favorites');
     return saved ? JSON.parse(saved) : [];
 };
 
 const initialState: FavoritesState = {
-    ids: loadFavorites(),
+    items: loadFavorites(),
 };
 
 const favoritesSlice = createSlice({
     name: 'favorites',
     initialState,
     reducers: {
-        toggleFavorite: (state, action: PayloadAction<number>) => {
-            const index = state.ids.indexOf(action.payload);
+        toggleFavorite: (state, action: PayloadAction<FavoriteMovie>) => {
+            const movie = action.payload;
+            const index = state.items.findIndex(item => item.id === movie.id);
+
             if (index === -1) {
-                state.ids.push(action.payload);
+                // Добавляем в избранное
+                state.items.push(movie);
             } else {
-                state.ids.splice(index, 1);
+                // Удаляем из избранного
+                state.items.splice(index, 1);
             }
-            localStorage.setItem('favorites', JSON.stringify(state.ids));
+
+            // Сохраняем в localStorage
+            localStorage.setItem('favorites', JSON.stringify(state.items));
+        },
+        removeFavorite: (state, action: PayloadAction<number>) => {
+            state.items = state.items.filter(item => item.id !== action.payload);
+            localStorage.setItem('favorites', JSON.stringify(state.items));
         },
     },
 });
 
-export const { toggleFavorite } = favoritesSlice.actions;
+export const { toggleFavorite, removeFavorite } = favoritesSlice.actions;
 export const favoritesReducer = favoritesSlice.reducer;

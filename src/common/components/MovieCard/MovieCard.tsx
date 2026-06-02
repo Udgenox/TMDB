@@ -1,5 +1,6 @@
 import {useAppDispatch, useAppSelector} from "@/app/store";
 import {toggleFavorite} from "@/features/favorites/model";
+import type {FavoriteMovie} from "@/features/favorites/model/favoritesSlice";
 
 import {useNavigate} from "react-router";
 import s from './MovieCard.module.css'
@@ -24,7 +25,7 @@ export const MovieCard = ({ id, title, posterPath, voteAverage }: MovieCardProps
 
     // Проверяем, в избранном ли фильм
     const isFavorite = useAppSelector((state) =>
-        state.favorites.ids.includes(id)
+        state.favorites.items.some(item => item.id === id)
     );
 
     const handleClick = () => {
@@ -32,8 +33,16 @@ export const MovieCard = ({ id, title, posterPath, voteAverage }: MovieCardProps
     };
 
     const handleFavoriteClick = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Чтобы не сработал переход на страницу фильма
-        dispatch(toggleFavorite(id));
+        e.stopPropagation();
+
+        const favoriteMovie: FavoriteMovie = {
+            id,
+            title,
+            posterPath,
+            voteAverage,
+        };
+
+        dispatch(toggleFavorite(favoriteMovie));
     };
 
     return (
