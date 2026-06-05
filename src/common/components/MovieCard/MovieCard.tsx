@@ -14,7 +14,7 @@ export type MovieCardProps = {
 
 
 const getRatingColor = (rating: number): string => {
-    if (rating >= 8) return s.ratingGreen;
+    if (rating >= 7) return s.ratingGreen;
     if (rating >= 5) return s.ratingYellow;
     return s.ratingRed;
 }

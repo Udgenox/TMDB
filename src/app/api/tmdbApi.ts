@@ -1,15 +1,19 @@
-import type {ApiResponse, DiscoverParams, Genre, SearchParams} from "@/app/api/tmdbAPI.types";
+import {baseQueryWithErrorHandling} from "@/app/api/baseQueryWithErrorHandling";
+import type {
+    ApiResponse,
+    CreditsResponse,
+    DiscoverParams,
+    Genre,
+    MovieDetails,
+    SearchParams,
+    SimilarResponse
+} from "@/app/api/tmdbAPI.types";
 import type {CategoryType} from "@/features/categoryMovies/ui/CategoryMoviesPage";
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi} from '@reduxjs/toolkit/query/react';
 
 export const tmdbApi = createApi({
     reducerPath: 'tmdbApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_BASE_URL,
-        headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_API_KEY}`,
-        },
-    }),
+    baseQuery: baseQueryWithErrorHandling,
     endpoints: (builder) => ({
         getPopularMovies: builder.query<ApiResponse, number | void>({
             query: (page = 1) => `/movie/popular?language=en-US&page=${page}`,
@@ -46,6 +50,20 @@ export const tmdbApi = createApi({
                 return url;
             },
         }),
+        // Детали фильма
+        getMovieDetails: builder.query<MovieDetails, number>({
+            query: (movieId) => `/movie/${movieId}?language=en-US`,
+        }),
+
+        // Актеры фильма (credits)
+        getMovieCredits: builder.query<CreditsResponse, number>({
+            query: (movieId) => `/movie/${movieId}/credits?language=en-US`,
+        }),
+
+        // Похожие фильмы
+        getSimilarMovies: builder.query<SimilarResponse, { movieId: number; page?: number }>({
+            query: ({ movieId, page = 1 }) => `/movie/${movieId}/similar?language=en-US&page=${page}`,
+        }),
     }),
 });
 
@@ -57,5 +75,8 @@ export const {
     useSearchMoviesQuery,
     useGetMoviesByCategoryQuery,
     useDiscoverMoviesQuery,
-    useGetGenresQuery
+    useGetGenresQuery,
+    useGetMovieDetailsQuery,
+    useGetMovieCreditsQuery,
+    useGetSimilarMoviesQuery
 } = tmdbApi;

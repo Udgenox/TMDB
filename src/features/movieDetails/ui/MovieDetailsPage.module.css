@@ -1,0 +1,272 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Кнопка "Назад" */
+.backButtonTop {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 0;
+    margin-bottom: 24px;
+    transition: color 0.2s ease;
+}
+
+.backButtonTop:hover {
+    color: #e50914;
+}
+
+/* Блок 1: Информация о фильме */
+.movieHeader {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+}
+
+.posterWrapper {
+    flex-shrink: 0;
+    width: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+}
+
+.poster {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.posterPlaceholder {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    background: linear-gradient(135deg, var(--border) 0%, var(--bg-secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.movieInfo {
+    flex: 1;
+}
+
+.movieTitle {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-h);
+}
+
+.movieMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.year, .runtime {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(229, 9, 20, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.ratingValue {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e50914;
+}
+
+.genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.genreTag {
+    padding: 4px 12px;
+    background-color: var(--bg-secondary);
+    border-radius: 20px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.overview h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-h);
+}
+
+.overview p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+/* Секции */
+.section {
+    margin-top: 48px;
+}
+
+.sectionTitle {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--text-h);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+}
+
+/* Сетка актёров */
+.actorsGrid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+}
+
+/* Сетка похожих фильмов */
+.similarGrid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.loading p, .error p {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.error h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #e50914;
+}
+
+.backButton {
+    margin-top: 20px;
+    padding: 10px 24px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.noData {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .actorsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .similarGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .actorsGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .similarGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .movieHeader {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .posterWrapper {
+        width: 200px;
+    }
+
+    .movieMeta {
+        justify-content: center;
+    }
+
+    .genres {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .actorsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .similarGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Кружок с рейтингом */
+.ratingBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ratingValue {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Зелёный (8-10) */
+.ratingGreen {
+    background-color: #4caf50;
+    border: none;
+}
+
+/* Жёлтый (5-7) */
+.ratingYellow {
+    background-color: #ffc107;
+    border: none;
+}
+
+/* Красный (0-5) */
+.ratingRed {
+    background-color: #f44336;
+    border: none;
+}
