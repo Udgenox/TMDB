@@ -1,6 +1,7 @@
 import {useGetPopularMoviesQuery} from "@/app/api";
 import {useGetNowPlayingMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMoviesQuery} from "@/app/api/tmdbApi";
 import {MovieSection} from "@/common/components/MovieSection/MovieSection";
+import {MoviesGridSkeleton} from "@/common/components/Skeletons";
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router';
 import s from './MainPage.module.css';
@@ -10,10 +11,10 @@ export const MainPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [backgroundImage, setBackgroundImage] = useState('');
 
-    const { data: popularMovies } = useGetPopularMoviesQuery(1);
-    const { data: topRatedMovies } = useGetTopRatedMoviesQuery(1);
-    const { data: upcomingMovies } = useGetUpcomingMoviesQuery(1);
-    const { data: nowPlayingMovies } = useGetNowPlayingMoviesQuery(1);
+    const { data: popularMovies, isLoading: isLoadingPopular } = useGetPopularMoviesQuery(1);
+    const { data: topRatedMovies, isLoading: isLoadingTopRated } = useGetTopRatedMoviesQuery(1);
+    const { data: upcomingMovies, isLoading: isLoadingUpcoming } = useGetUpcomingMoviesQuery(1);
+    const { data: nowPlayingMovies, isLoading: isLoadingNowPlaying } = useGetNowPlayingMoviesQuery(1);
 
     useEffect(() => {
         if (popularMovies?.results && popularMovies.results.length > 0) {
@@ -80,29 +81,69 @@ export const MainPage = () => {
             </section>
 
             <div className={s.container}>
-                <MovieSection
-                    title="Popular Movies"
-                    movies={popularMovies?.results || []}
-                    onViewMore={() => handleViewMore('popular')}
-                />
+                {/* Popular Movies */}
+                {isLoadingPopular ? (
+                    <div className={s.skeletonSection}>
+                        <div className={s.sectionHeader}>
+                            <h2 className={s.sectionTitle}>Popular Movies</h2>
+                        </div>
+                        <MoviesGridSkeleton count={6} />
+                    </div>
+                ) : (
+                    <MovieSection
+                        title="Popular Movies"
+                        movies={popularMovies?.results || []}
+                        onViewMore={() => handleViewMore('popular')}
+                    />
+                )}
 
-                <MovieSection
-                    title="Top Rated"
-                    movies={topRatedMovies?.results || []}
-                    onViewMore={() => handleViewMore('top_rated')}
-                />
+                {/* Top Rated Movies */}
+                {isLoadingTopRated ? (
+                    <div className={s.skeletonSection}>
+                        <div className={s.sectionHeader}>
+                            <h2 className={s.sectionTitle}>Top Rated</h2>
+                        </div>
+                        <MoviesGridSkeleton count={6} />
+                    </div>
+                ) : (
+                    <MovieSection
+                        title="Top Rated"
+                        movies={topRatedMovies?.results || []}
+                        onViewMore={() => handleViewMore('top_rated')}
+                    />
+                )}
 
-                <MovieSection
-                    title="Upcoming"
-                    movies={upcomingMovies?.results || []}
-                    onViewMore={() => handleViewMore('upcoming')}
-                />
+                {/* Upcoming Movies */}
+                {isLoadingUpcoming ? (
+                    <div className={s.skeletonSection}>
+                        <div className={s.sectionHeader}>
+                            <h2 className={s.sectionTitle}>Upcoming</h2>
+                        </div>
+                        <MoviesGridSkeleton count={6} />
+                    </div>
+                ) : (
+                    <MovieSection
+                        title="Upcoming"
+                        movies={upcomingMovies?.results || []}
+                        onViewMore={() => handleViewMore('upcoming')}
+                    />
+                )}
 
-                <MovieSection
-                    title="Now Playing"
-                    movies={nowPlayingMovies?.results || []}
-                    onViewMore={() => handleViewMore('now_playing')}
-                />
+                {/* Now Playing Movies */}
+                {isLoadingNowPlaying ? (
+                    <div className={s.skeletonSection}>
+                        <div className={s.sectionHeader}>
+                            <h2 className={s.sectionTitle}>Now Playing</h2>
+                        </div>
+                        <MoviesGridSkeleton count={6} />
+                    </div>
+                ) : (
+                    <MovieSection
+                        title="Now Playing"
+                        movies={nowPlayingMovies?.results || []}
+                        onViewMore={() => handleViewMore('now_playing')}
+                    />
+                )}
             </div>
         </>
     );

@@ -1,5 +1,6 @@
 
 import {useSearchMoviesQuery} from "@/app/api";
+import {MoviesGridSkeleton} from "@/common/components/Skeletons";
 import {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router";
 import s from './SearchPage.module.css'
@@ -135,7 +136,7 @@ export const SearchPage = () => {
                             Search
                         </button>
                     </div>
-                    <div className={s.loading}>Loading...</div>
+                    <MoviesGridSkeleton count={20}/>
                 </div>
             </div>
         );

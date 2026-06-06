@@ -1,0 +1,14 @@
+.card {
+    background-color: var(--card-bg, var(--bg-secondary));
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.poster {
+    aspect-ratio: 2 / 3;
+    width: 100%;
+}
+
+.title {
+    padding: 12px;
+}

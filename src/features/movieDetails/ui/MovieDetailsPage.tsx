@@ -1,5 +1,6 @@
 import {useGetMovieCreditsQuery, useGetMovieDetailsQuery, useGetSimilarMoviesQuery} from "@/app/api/tmdbApi";
 import {MovieCard} from "@/common/components/MovieCard/MovieCard";
+import {ActorsGridSkeleton, MoviesGridSkeleton} from "@/common/components/Skeletons";
 import {ActorCard} from "@/features/movieDetails/ui/ActorCard";
 import {useNavigate, useParams} from "react-router";
 import s from './MovieDetailsPage.module.css'
@@ -11,26 +12,26 @@ const getRatingColor = (rating: number): string => {
 };
 
 export const MovieDetailsPage = () => {
-    const { id } = useParams<{ id: string }>();
+    const {id} = useParams<{ id: string }>();
     const navigate = useNavigate();
     const movieId = parseInt(id || '0');
 
-    const { data: movie, isLoading: movieLoading, error: movieError } = useGetMovieDetailsQuery(movieId, {
+    const {data: movie, isLoading: movieLoading, error: movieError} = useGetMovieDetailsQuery(movieId, {
         skip: !movieId,
     });
-    const { data: credits, isLoading: creditsLoading } = useGetMovieCreditsQuery(movieId, {
+    const {data: credits, isLoading: creditsLoading} = useGetMovieCreditsQuery(movieId, {
         skip: !movieId,
     });
-    const { data: similar, isLoading: similarLoading } = useGetSimilarMoviesQuery(
-        { movieId, page: 1 },
-        { skip: !movieId }
+    const {data: similar, isLoading: similarLoading} = useGetSimilarMoviesQuery(
+        {movieId, page: 1},
+        {skip: !movieId}
     );
 
     const handleGoBack = () => {
         navigate(-1); // Возврат на предыдущую страницу
     };
 
-    if (movieLoading || creditsLoading) {
+    if (movieLoading) {
         return (
             <div className={s.loading}>
                 <div className={s.spinner}></div>
@@ -105,43 +106,50 @@ export const MovieDetailsPage = () => {
                 </div>
             </div>
 
-            {/* Блок 2: Актеры (в главных ролях) */}
+            {/* Блок 2: Актеры */}
             <div className={s.section}>
                 <h2 className={s.sectionTitle}>Top Cast</h2>
-                {topActors.length > 0 ? (
-                    <div className={s.actorsGrid}>
-                        {topActors.map((actor) => (
-                            <ActorCard
-                                key={actor.id}
-                                name={actor.name}
-                                character={actor.character}
-                                profilePath={actor.profile_path}
-                            />
-                        ))}
-                    </div>
+                {creditsLoading ? (
+                    <ActorsGridSkeleton count={6}/>
                 ) : (
-                    <p className={s.noData}>No cast information available.</p>
+                    topActors.length > 0 ? (
+                        <div className={s.actorsGrid}>
+                            {topActors.map((actor) => (
+                                <ActorCard
+                                    key={actor.id}
+                                    name={actor.name}
+                                    character={actor.character}
+                                    profilePath={actor.profile_path}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <p className={s.noData}>No cast information available.</p>
+                    )
                 )}
             </div>
 
             {/* Блок 3: Похожие фильмы */}
             <div className={s.section}>
                 <h2 className={s.sectionTitle}>Similar Movies</h2>
-                {similarLoading && <p>Loading similar movies...</p>}
-                {!similarLoading && similarMovies.length > 0 ? (
-                    <div className={s.similarGrid}>
-                        {similarMovies.map((movie) => (
-                            <MovieCard
-                                key={movie.id}
-                                id={movie.id}
-                                title={movie.title}
-                                posterPath={movie.poster_path}
-                                voteAverage={movie.vote_average}
-                            />
-                        ))}
-                    </div>
+                {similarLoading ? (
+                    <MoviesGridSkeleton count={6}/>
                 ) : (
-                    !similarLoading && <p className={s.noData}>No similar movies found.</p>
+                    similarMovies.length > 0 ? (
+                        <div className={s.similarGrid}>
+                            {similarMovies.map((movie) => (
+                                <MovieCard
+                                    key={movie.id}
+                                    id={movie.id}
+                                    title={movie.title}
+                                    posterPath={movie.poster_path}
+                                    voteAverage={movie.vote_average}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <p className={s.noData}>No similar movies found.</p>
+                    )
                 )}
             </div>
         </div>

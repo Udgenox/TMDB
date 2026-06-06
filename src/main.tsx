@@ -6,6 +6,7 @@ import {BrowserRouter} from "react-router";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {App} from "./app/ui/App";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

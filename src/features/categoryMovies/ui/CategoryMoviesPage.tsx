@@ -1,5 +1,6 @@
 import {useGetMoviesByCategoryQuery} from "@/app/api/tmdbApi";
 import {MovieCard} from "@/common/components/MovieCard/MovieCard";
+import {MoviesGridSkeleton} from "@/common/components/Skeletons";
 import {useEffect, useState} from "react";
 import {useSearchParams} from "react-router";
 import s from './CategoryMoviesPage.module.css'
@@ -81,9 +82,7 @@ export const CategoryMoviesPage = () => {
             <h1 className={s.pageTitle}>{pageTitle}</h1>
 
             {/* Загрузка */}
-            {isLoading && (
-                <div className={s.loading}>Loading...</div>
-            )}
+            {isLoading && <MoviesGridSkeleton count={20} />}
 
             {/* Ошибка */}
             {!isLoading && !data?.results && (

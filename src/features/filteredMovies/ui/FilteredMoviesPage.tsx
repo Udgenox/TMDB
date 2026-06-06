@@ -1,11 +1,12 @@
+
 import {useDiscoverMoviesQuery} from "@/app/api/tmdbApi";
-import {MovieCard} from "@/common/components/MovieCard/MovieCard";
-import {useFilters} from "@/features/filteredMovies/model/useFilters";
-import {FilterSidebar} from "@/features/filteredMovies/ui/FilterSidebar";
-import s from './FilteredMoviesPage.module.css'
+import { MovieCard } from '@/common/components/MovieCard/MovieCard';
+import { FilterSidebar } from './FilterSidebar';
+import { MoviesGridSkeleton } from '@/common/components/Skeletons';   // 🔵 НОВОЕ: импорт скелетона
+import { useFilters } from '../model/useFilters';
+import s from './FilteredMoviesPage.module.css';
 
 export const FilteredMoviesPage = () => {
-    // Вся логика фильтров в одном хуке!
     const {
         sortBy,
         ratingMin,
@@ -22,10 +23,8 @@ export const FilteredMoviesPage = () => {
         resetFilters,
     } = useFilters();
 
-    // Формируем строку жанров для API (через запятую)
     const withGenres = selectedGenres.length > 0 ? selectedGenres.join(',') : undefined;
 
-    // Запрос к API
     const { data, isLoading, isFetching } = useDiscoverMoviesQuery({
         page: currentPage,
         sort_by: sortBy,
@@ -35,7 +34,6 @@ export const FilteredMoviesPage = () => {
     });
 
     const totalPages = Math.min(data?.total_pages || 1, 500);
-
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= totalPages) {
             setPage(page);
@@ -46,7 +44,6 @@ export const FilteredMoviesPage = () => {
     return (
         <div className={s.container}>
             <div className={s.twoColumns}>
-                {/* Левая колонка — фильтры */}
                 <aside className={s.sidebarColumn}>
                     <FilterSidebar
                         sortBy={sortBy}
@@ -61,87 +58,77 @@ export const FilteredMoviesPage = () => {
                     />
                 </aside>
 
-                {/* Правая колонка — результаты */}
                 <div className={s.contentColumn}>
                     <h1 className={s.pageTitle}>Filtered Movies</h1>
 
-                    {isLoading && <div className={s.loading}>Loading...</div>}
-
-                    {data?.results && data.results.length > 0 && (
-                        <>
-                            <div className={s.moviesGrid}>
-                                {data.results.map((movie) => (
-                                    <MovieCard
-                                        key={movie.id}
-                                        id={movie.id}
-                                        title={movie.title}
-                                        posterPath={movie.poster_path}
-                                        voteAverage={movie.vote_average}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Пагинация в формате "1 2 ... последняя" */}
-                            {totalPages > 1 && (
-                                <div className={s.pagination}>
-                                    <button
-                                        className={s.pageButton}
-                                        onClick={() => handlePageChange(currentPage - 1)}
-                                        disabled={currentPage === 1}
-                                    >
-                                        ← Previous
-                                    </button>
-
-                                    <div className={s.pageNumbers}>
-                                        {/* Страница 1 */}
-                                        <button
-                                            className={`${s.pageNumber} ${currentPage === 1 ? s.activePage : ''}`}
-                                            onClick={() => handlePageChange(1)}
-                                        >
-                                            1
-                                        </button>
-
-                                        {/* Страница 2 (если есть) */}
-                                        {totalPages >= 2 && (
-                                            <button
-                                                className={`${s.pageNumber} ${currentPage === 2 ? s.activePage : ''}`}
-                                                onClick={() => handlePageChange(2)}
-                                            >
-                                                2
-                                            </button>
-                                        )}
-
-                                        {/* Троеточие, если есть страницы после 2 */}
-                                        {totalPages > 3 && <span className={s.dots}>...</span>}
-
-                                        {/* Последняя страница (если не 1 и не 2) */}
-                                        {totalPages > 2 && (
-                                            <button
-                                                className={`${s.pageNumber} ${currentPage === totalPages ? s.activePage : ''}`}
-                                                onClick={() => handlePageChange(totalPages)}
-                                            >
-                                                {totalPages}
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    <button
-                                        className={s.pageButton}
-                                        onClick={() => handlePageChange(currentPage + 1)}
-                                        disabled={currentPage === totalPages}
-                                    >
-                                        Next →
-                                    </button>
+                    {/* ✅ ИЗМЕНЕНО: вместо текста "Loading..." теперь показывается скелетон */}
+                    {isLoading ? (
+                        <MoviesGridSkeleton count={20} />   // 🔵 НОВОЕ: скелетон сетки фильмов (20 карточек)
+                    ) : (
+                        data?.results && data.results.length > 0 ? (
+                            <>
+                                <div className={s.moviesGrid}>
+                                    {data.results.map((movie) => (
+                                        <MovieCard
+                                            key={movie.id}
+                                            id={movie.id}
+                                            title={movie.title}
+                                            posterPath={movie.poster_path}
+                                            voteAverage={movie.vote_average}
+                                        />
+                                    ))}
                                 </div>
-                            )}
 
-                            {isFetching && !isLoading && <div className={s.fetching}>Updating...</div>}
-                        </>
+                                {totalPages > 1 && (
+                                    <div className={s.pagination}>
+                                        <button
+                                            className={s.pageButton}
+                                            onClick={() => handlePageChange(currentPage - 1)}
+                                            disabled={currentPage === 1}
+                                        >
+                                            ← Previous
+                                        </button>
+                                        <div className={s.pageNumbers}>
+                                            <button
+                                                className={`${s.pageNumber} ${currentPage === 1 ? s.activePage : ''}`}
+                                                onClick={() => handlePageChange(1)}
+                                            >
+                                                1
+                                            </button>
+                                            {totalPages >= 2 && (
+                                                <button
+                                                    className={`${s.pageNumber} ${currentPage === 2 ? s.activePage : ''}`}
+                                                    onClick={() => handlePageChange(2)}
+                                                >
+                                                    2
+                                                </button>
+                                            )}
+                                            {totalPages > 3 && <span className={s.dots}>...</span>}
+                                            {totalPages > 2 && (
+                                                <button
+                                                    className={`${s.pageNumber} ${currentPage === totalPages ? s.activePage : ''}`}
+                                                    onClick={() => handlePageChange(totalPages)}
+                                                >
+                                                    {totalPages}
+                                                </button>
+                                            )}
+                                        </div>
+                                        <button
+                                            className={s.pageButton}
+                                            onClick={() => handlePageChange(currentPage + 1)}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            Next →
+                                        </button>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className={s.emptyState}>No movies found with selected filters</div>
+                        )
                     )}
 
-                    {!isLoading && data?.results.length === 0 && (
-                        <div className={s.emptyState}>No movies found</div>
-                    )}
+                    {isFetching && !isLoading && <div className={s.fetching}>Updating...</div>}
                 </div>
             </div>
         </div>
