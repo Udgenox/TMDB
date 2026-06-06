@@ -1,13 +1,17 @@
 import {baseQueryWithErrorHandling} from "@/app/api/baseQueryWithErrorHandling";
 import type {
-    ApiResponse,
-    CreditsResponse,
     DiscoverParams,
     Genre,
-    MovieDetails,
     SearchParams,
-    SimilarResponse
 } from "@/app/api/tmdbAPI.types";
+
+import type {
+    ApiResponse,
+    MovieDetails,
+    CreditsResponse,
+    SimilarResponse
+} from "@/common/schemas";
+
 import type {CategoryType} from "@/features/categoryMovies/ui/CategoryMoviesPage";
 import {createApi} from '@reduxjs/toolkit/query/react';
 
@@ -28,11 +32,11 @@ export const tmdbApi = createApi({
             query: (page = 1) => `/movie/now_playing?language=en-US&page=${page}`,
         }),
         searchMovies: builder.query<ApiResponse, SearchParams>({
-            query: ({ query, page = 1 }) =>
+            query: ({query, page = 1}) =>
                 `/search/movie?query=${encodeURIComponent(query)}&language=en-US&page=${page}`,
         }),
         getMoviesByCategory: builder.query<ApiResponse, { category: CategoryType; page?: number }>({
-            query: ({ category, page = 1 }) => `/movie/${category}?language=en-US&page=${page}`,
+            query: ({category, page = 1}) => `/movie/${category}?language=en-US&page=${page}`,
         }),
         getGenres: builder.query<{ genres: Genre[] }, void>({
             query: () => '/genre/movie/list?language=en-US',
@@ -62,7 +66,7 @@ export const tmdbApi = createApi({
 
         // Похожие фильмы
         getSimilarMovies: builder.query<SimilarResponse, { movieId: number; page?: number }>({
-            query: ({ movieId, page = 1 }) => `/movie/${movieId}/similar?language=en-US&page=${page}`,
+            query: ({movieId, page = 1}) => `/movie/${movieId}/similar?language=en-US&page=${page}`,
         }),
     }),
 });
