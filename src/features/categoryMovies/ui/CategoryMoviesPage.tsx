@@ -8,10 +8,10 @@ import s from './CategoryMoviesPage.module.css'
 export type CategoryType = 'popular' | 'top_rated' | 'upcoming' | 'now_playing';
 
 const categories: { id: CategoryType; label: string }[] = [
-    { id: 'popular', label: 'Popular' },
-    { id: 'top_rated', label: 'Top Rated' },
-    { id: 'upcoming', label: 'Upcoming' },
-    { id: 'now_playing', label: 'Now Playing' },
+    { id: 'popular', label: 'Popular Movies' },
+    { id: 'top_rated', label: 'Top Rated Movies' },
+    { id: 'upcoming', label: 'Upcoming Movies' },
+    { id: 'now_playing', label: 'Now Playing Movies' },
 ];
 
 const getCategoryTitle = (category: CategoryType): string => {

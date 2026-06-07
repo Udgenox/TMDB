@@ -4,10 +4,19 @@ body {
   --text: #6b6375;
   --text-h: #08060d;
   --border: #e5e4e7;
-  --header-bg: #ffffff;
   --button-bg: #f0f0f0;
-  --clear-button-bg: rgb(102, 102, 102);  /* ← добавляем для светлой темы */
+  --clear-button-bg: rgb(102, 102, 102);
   --clear-button-color: rgb(255, 255, 255);
+
+  /* Навигация — светлая тема */
+  --text-primary: rgb(33, 41, 54);
+  --text-secondary: #6b6375;
+  --nav-bg: rgba(0, 0, 0, 0.04);
+  --nav-hover-bg: rgba(0, 0, 0, 0.06);
+  --nav-active-bg: rgba(59, 130, 246, 0.1);
+  --header-bg-rgb: 255, 255, 255;
+  --button-bg-hover: rgba(0, 0, 0, 0.1);
+
   background-color: var(--bg);
   color: var(--text);
 }
@@ -18,17 +27,24 @@ body.dark {
   --text: #9ca3af;
   --text-h: #f3f4f6;
   --border: #2e303a;
-  --header-bg: #1f2028;
   --button-bg: #2d2e36;
-  --clear-button-bg: rgb(161, 161, 161);  /* ← добавляем для тёмной темы */
+  --clear-button-bg: rgb(161, 161, 161);
   --clear-button-color: rgb(0, 0, 0);
+
+  /* Навигация — тёмная тема */
+  --text-primary: rgb(227, 232, 239);
+  --text-secondary: #9ca3af;
+  --nav-bg: rgba(255, 255, 255, 0.06);
+  --nav-hover-bg: rgba(255, 255, 255, 0.1);
+  --nav-active-bg: rgba(59, 130, 246, 0.2);
+  --header-bg-rgb: 23, 23, 27;
+  --button-bg-hover: rgba(255, 255, 255, 0.1);
+
   background-color: var(--bg);
   color: var(--text);
 }
 
-/* ========== НОВЫЕ СТИЛИ ДЛЯ FOOTER ========== */
-
-/* Чтобы footer прижимался к низу */
+/* ========== СТИЛИ ДЛЯ ПРИЖАТИЯ FOOTER ========== */
 html, body {
   margin: 0;
   padding: 0;
@@ -41,7 +57,28 @@ html, body {
   min-height: 100vh;
 }
 
-/* Главный контент — занимает всё свободное место */
 .main-content {
   flex: 1;
+}
+
+/* Убираем возможные рамки у всех элементов */
+* {
+  border: none;
+  outline: none;
+}
+
+/* Возвращаем рамку только там, где нужна (например, для инпутов) */
+input,
+button,
+textarea,
+select {
+  border: 1px solid var(--border);
+  outline: none;
+}
+
+input:focus,
+button:focus,
+textarea:focus,
+select:focus {
+  outline: none;
 }

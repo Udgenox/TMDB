@@ -3,7 +3,7 @@ import type { RootState } from '@/app/store/store';
 // import { tmdbApi } from '@/app/api/tmdbApi';
 
 // Список эндпоинтов для исключения из глобального индикатора
-const excludedEndpoints = [
+const excludedEndpoints: string[]  = [
     // Можно добавить эндпоинты, которые не должны показывать загрузку
     // tmdbApi.endpoints.getGenres.name,        // пример: жанры не показывают загрузку
     // tmdbApi.endpoints.getMovieDetails.name,  // пример: детали фильма

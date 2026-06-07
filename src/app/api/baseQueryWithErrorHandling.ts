@@ -42,7 +42,7 @@ export const baseQueryWithErrorHandling: BaseQueryFn<
     unknown,
     FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // await new Promise(resolve => setTimeout(resolve, 3000));
 
     const rawBaseQuery = fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BASE_URL,

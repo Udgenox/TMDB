@@ -41,7 +41,7 @@ export const MainPage = () => {
     };
 
     const handleViewMore = (category: string) => {
-        navigate(`/category?type=${category}`);
+        navigate(`/playlists?category=${category}`);
     };
 
     return (

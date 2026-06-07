@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0", //так как TypeScript 7.0
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

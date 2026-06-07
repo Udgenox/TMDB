@@ -1,12 +1,47 @@
-.title {
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
     text-align: center;
-    font-size: 250px;
+    padding: 40px 20px;
+}
+
+.title {
+    font-size: 120px;
+    font-weight: 700;
     margin: 0;
+    color: rgb(54, 98, 227);
+    line-height: 1;
 }
 
 .subtitle {
-    text-align: center;
-    font-size: 50px;
-    margin: 0;
-    text-transform: uppercase;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 16px 0 8px;
+    color: var(--text-h);
+}
+
+.description {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+.homeButton {
+    padding: 12px 28px;
+    background-color: rgb(54, 98, 227);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.homeButton:hover {
+    background-color: rgb(54, 98, 227);
+    transform: translateY(-2px);
 }

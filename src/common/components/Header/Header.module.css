@@ -1,31 +1,82 @@
-.container {
-    background-color: var(--header-bg);
+/* Основной контейнер хедера */
+.header {
+    background-color: rgba(var(--header-bg-rgb), 0.85);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
-    padding: 1rem 2rem;
     position: sticky;
     top: 0;
     z-index: 100;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
 }
 
-.list {
+/* Навигация */
+.nav {
+    flex: 1;
     display: flex;
-    gap: 2rem;
-    list-style: none;
+    justify-content: center;
+}
+
+.navList {
+    display: flex;
     align-items: center;
+    gap: 0;
+    list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 6px;
+    background-color: var(--nav-bg);
+    border-radius: 40px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.navLink {
+    display: inline-block;
+    padding: 8px 20px;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.2s ease;
+    background-color: transparent;
+}
+
+.navLink:hover {
+    background-color: var(--nav-hover-bg);
+    color: #3b82f6;
 }
 
 .activeLink {
-    font-weight: bold;
-    color: #e50914;
-    border-bottom: 2px solid #e50914;
+    background-color: var(--nav-active-bg);
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
+/* Разделитель */
+.divider {
+    color: var(--text-secondary);
+    opacity: 0.4;
+    margin: 0 2px;
+    font-size: 14px;
+}
+
+/* Кнопка темы */
 .themeButton {
     background: none;
     border: none;
@@ -44,5 +95,34 @@
 
 .themeButton:hover {
     transform: scale(1.1);
-    opacity: 0.8;
+    background-color: var(--button-bg-hover);
+}
+
+/* Убираем фокусную рамку */
+.navLink:focus,
+.navLink:focus-visible {
+    outline: none;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .nav {
+        order: 2;
+        width: 100%;
+    }
+
+    .navList {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .navLink {
+        padding: 6px 12px;
+        font-size: 18px;
+    }
 }
